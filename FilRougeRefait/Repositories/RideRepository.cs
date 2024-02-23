@@ -1,8 +1,8 @@
 ﻿using CoVoyageur.Core.Models;
 using System.Linq.Expressions;
 using CoVoyageur.API.Data;
-using Microsoft.EntityFrameworkCore;
 using CoVoyageur.API.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoVoyageur.API.Repositories
 {
@@ -16,37 +16,57 @@ namespace CoVoyageur.API.Repositories
 
         public Task<List<Ride>> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.Rides.ToListAsync(); //fait
+
         }
 
-        public Task<List<Ride>> GetAll(Expression<Func<Ride, bool>> predicate)
+        public async Task<List<Ride>> GetAll(Expression<Func<Ride, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _db.Rides.Where(predicate).ToListAsync(); //fait
         }
 
-        public Task<Ride?> GetById(int id)
+        public async Task<Ride?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Rides.FindAsync(id); //fait
         }
 
-        public Task<Ride?> Get(Expression<Func<Ride, bool>> predicate)
+        public async Task<Ride?> Get(Expression<Func<Ride, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _db.Rides.FirstOrDefaultAsync(predicate); //fait
         }
 
-        public Task<Ride?> Add(Ride entity)
+        public async Task<Ride?> Add(Ride usr)
         {
-            throw new NotImplementedException();
+            var added = await _db.Rides.AddAsync(usr); //fait
+            await _db.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public Task<Ride?> Update(Ride entity)
+        public async Task<Ride?> Update(Ride ride)
         {
-            throw new NotImplementedException();
+            var rideDb = await GetById(ride.ID);//fait
+            if (rideDb == null)
+                return null;
+
+            if (rideDb.Reservations != ride.Reservations) rideDb.Reservations = ride.Reservations;
+            if (rideDb.DateHour != ride.DateHour) rideDb.DateHour = ride.DateHour;
+            if (rideDb.Departure != ride.Departure) rideDb.Departure = ride.Departure;
+            if (rideDb.Arrival != ride.Arrival) rideDb.Arrival = ride.Arrival;
+            if (rideDb.NbPlaces != ride.NbPlaces) rideDb.NbPlaces = ride.NbPlaces;
+
+            if (await _db.SaveChangesAsync() == 0)
+                return null;
+
+            return rideDb;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)//fait
         {
-            throw new NotImplementedException();
+            var ride = await GetById(id);
+            if (ride == null)
+                return false;
+            _db.Rides.Remove(ride);
+            return await _db.SaveChangesAsync() > 0;
         }
     }
 }
