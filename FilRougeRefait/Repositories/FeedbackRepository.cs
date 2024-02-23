@@ -1,52 +1,76 @@
 ﻿using CoVoyageur.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using CoVoyageur.API.Data;
-using CoVoyageur.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoVoyageur.API.Repositories
 {
     public class FeedbackRepository : IRepository<Feedback>
     {
-        private ApplicationDbContext _db { get; }
+        private readonly ApplicationDbContext _db;
+
         public FeedbackRepository(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        public Task<List<Feedback>> GetAll()
+        public async Task<List<Feedback>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _db.Feedbacks.ToListAsync();
         }
 
-        public Task<List<Feedback>> GetAll(Expression<Func<Feedback, bool>> predicate)
+        public async Task<List<Feedback>> GetAll(Expression<Func<Feedback, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _db.Feedbacks.Where(predicate).ToListAsync();
         }
 
-        public Task<Feedback?> GetById(int id)
+        public async Task<Feedback?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _db.Feedbacks.FindAsync(id);
         }
 
-        public Task<Feedback?> Get(Expression<Func<Feedback, bool>> predicate)
+        public async Task<Feedback?> Get(Expression<Func<Feedback, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _db.Feedbacks.FirstOrDefaultAsync(predicate);
         }
 
-        public Task<Feedback?> Add(Feedback entity)
+        public async Task<Feedback?> Add(Feedback feedback)
         {
-            throw new NotImplementedException();
+            var added = await _db.Feedbacks.AddAsync(feedback);
+            await _db.SaveChangesAsync();
+            return added.Entity;
         }
 
-        public Task<Feedback?> Update(Feedback entity)
+        public async Task<Feedback?> Update(Feedback feedback)
         {
-            throw new NotImplementedException();
+            var feedbackDb = await GetById(feedback.ID);
+            if (feedbackDb == null)
+                return null;
+
+            feedbackDb.ID_Driver = feedback.ID_Driver;
+            feedbackDb.ID_Passenger = feedback.ID_Passenger;
+            feedbackDb.Rating = feedback.Rating;
+            feedbackDb.Comment = feedback.Comment;
+            feedbackDb.DateHour = feedback.DateHour;
+            feedbackDb.Author = feedback.Author;
+            feedbackDb.Driver = feedback.Driver;
+
+            await _db.SaveChangesAsync();
+            return feedbackDb;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var feedback = await GetById(id);
+            if (feedback == null)
+                return false;
+
+            _db.Feedbacks.Remove(feedback);
+            return await _db.SaveChangesAsync() > 0;
         }
     }
 }
