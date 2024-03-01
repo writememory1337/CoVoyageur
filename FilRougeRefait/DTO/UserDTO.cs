@@ -1,4 +1,5 @@
 ﻿using CoVoyageur.API.Validators;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -42,7 +43,7 @@ namespace CoVoyageur.API.DTOs
         [Display(Name = "Mot de passe")]
         [Required(ErrorMessage = "Mot de passe Manquant")]
         [PasswordValidator]
-        [JsonIgnore]
+        [ReadOnly(true)]
         public string? Password { get; set; }
 
         [Display(Name = "Administrateur")]

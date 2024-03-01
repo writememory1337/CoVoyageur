@@ -92,7 +92,7 @@ namespace CoVoyageur.API.Repositories
 
             return userDb;
         }
-
+        
         public async Task<bool> Delete(int id)//fait
         {
             var user = await GetById(id);
