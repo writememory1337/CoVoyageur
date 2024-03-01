@@ -21,7 +21,8 @@ namespace CoVoyageur.API.Data
         public DbSet<Reservation> Reservations { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasData(InitialUser.users);
+            modelBuilder.Entity<User>().HasData(InitialData.users);
+            modelBuilder.Entity<Ride>().HasData(InitialData.rides);
 
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Author)     

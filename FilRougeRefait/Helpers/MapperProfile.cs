@@ -10,6 +10,7 @@ namespace CoVoyageur.API.Helpers
         public MapperProfile()
         {
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<Ride, RideDTO>().ReverseMap();
         }   
     }
 }
