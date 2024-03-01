@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using CoVoyageur.API.DTOs;
 using CoVoyageur.Core.Models;
+using CoVoyageur.Core.Data;
 
 namespace CoVoyageur.API.Data
 {
@@ -20,6 +21,8 @@ namespace CoVoyageur.API.Data
         public DbSet<Reservation> Reservations { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().HasData(InitialUser.users);
+
             modelBuilder.Entity<Feedback>()
                 .HasOne(f => f.Author)     
                 .WithMany()                
@@ -32,5 +35,6 @@ namespace CoVoyageur.API.Data
                 .HasForeignKey(f => f.ID_Driver)  
                 .OnDelete(DeleteBehavior.Restrict);  
         }
+
     }
 }
