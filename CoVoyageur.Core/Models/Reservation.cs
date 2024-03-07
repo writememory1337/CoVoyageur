@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoVoyageur.Core.Models
 {
@@ -15,8 +16,11 @@ namespace CoVoyageur.Core.Models
         public int ID_Passenger { get; set; }
 
         [Column("Statuts")]
-        public Status? Statuts { get; set; }
+        [Required]
+        public Status? Statuts { get; set; } = Status.ONGOING;
+        [ForeignKey("ID_Ride")]
         public Ride? Travel { get; set; }
+        [ForeignKey("ID_Passenger")]
         public User? Passenger { get; set; }
     }
     public enum Status
