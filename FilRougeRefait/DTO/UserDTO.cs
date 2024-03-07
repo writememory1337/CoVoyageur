@@ -1,4 +1,4 @@
-﻿using CoVoyageur.Core.Validators;
+﻿using CoVoyageur.API.Validators;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
