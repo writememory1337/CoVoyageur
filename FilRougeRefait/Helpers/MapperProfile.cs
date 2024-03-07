@@ -11,6 +11,8 @@ namespace CoVoyageur.API.Helpers
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Ride, RideDTO>().ReverseMap();
+            CreateMap<Reservation, ReservationDTO>().ReverseMap();
+            CreateMap<Feedback, FeedbackDTO>().ReverseMap();
         }   
     }
 }
