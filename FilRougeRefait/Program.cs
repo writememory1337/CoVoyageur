@@ -3,8 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using CoVoyageur.API.Data;
 using CoVoyageur.Core.Models;
 using CoVoyageur.API.Repositories;
+using CoVoyageur.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.InjectDependancies();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FilRougeRefaitContext") ?? throw new InvalidOperationException("Connection string 'FilRougeRefaitContext' not found.")));
 
@@ -29,8 +33,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors(option =>
+{
+    option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+});
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

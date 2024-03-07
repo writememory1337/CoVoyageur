@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace CoVoyageur.API.Validators
+namespace CoVoyageur.Core.Validators
 {
     public class PasswordValidator : ValidationAttribute
     {
@@ -12,7 +12,7 @@ namespace CoVoyageur.API.Validators
 
             if (string.IsNullOrEmpty(input))
             {
-                ErrorMessage = "Le mot de passe ne doit pas être vide";
+                ErrorMessage = "password must not be empty";
             }
             else
             {
@@ -24,23 +24,23 @@ namespace CoVoyageur.API.Validators
 
                 if (!hasNumber.IsMatch(input))
                 {
-                    ErrorMessage += "Il manque des chiffres. ";
+                    ErrorMessage += "Le mot de passe doit contenir au moins (2) chiffres. ";
                 }
                 if (!hasUpperLetters.IsMatch(input))
                 {
-                    ErrorMessage += "Il manque des lettres majuscules. ";
+                    ErrorMessage += "Le mot de passe doit contenir au moins (2) lettres majuscules. ";
                 }
                 if (!hasLowerCase.IsMatch(input))
                 {
-                    ErrorMessage += "Il manque des lettres minuscules. ";
+                    ErrorMessage += "Le mot de passe doit contenir au moins (2) minuscules. ";
                 }
                 if (!hasEnoughChars.IsMatch(input))
                 {
-                    ErrorMessage += "Le mot de passe doit avoir entre 8 et 15 caractères. ";
+                    ErrorMessage += "Le mot de passe doit contenir entre 8 et 15 caractères. ";
                 }
                 if (!hasSymbol.IsMatch(input))
                 {
-                    ErrorMessage += "Il manque des symboles. ";
+                    ErrorMessage += "Le mot de passe doit contenir au moins (2) symboles. ";
                 }
 
                 if (ErrorMessage == string.Empty)
